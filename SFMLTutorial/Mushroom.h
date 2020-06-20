@@ -11,6 +11,9 @@ namespace SFMLTutorial
             InitMushroom();
         }
 
+		/**
+		 * \brief Bounce mushroom around windows.
+		 */
         void Bounce(unsigned int widthWindow, unsigned int heighWindow)
         {
             if ((mushroom_.getPosition().x + size_.x / 2 > widthWindow && increment_.x > 0)
@@ -40,6 +43,7 @@ namespace SFMLTutorial
         {
             mushroom_texture_.loadFromFile(path_);
             mushroom_.setTexture(mushroom_texture_);
+			// mushroom_.setColor(sf::Color(255, 0, 0, 255)); // Red tint.
 
             size_ = mushroom_texture_.getSize();
             mushroom_.setOrigin(size_.x / 2.0f, size_.y / 2.0f);
