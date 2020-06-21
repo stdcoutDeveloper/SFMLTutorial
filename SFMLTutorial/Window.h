@@ -77,6 +77,11 @@ namespace SFMLTutorial
             Create();
         }
 
+        sf::RenderWindow& GetRenderWindow()
+        {
+            return window_;
+        }
+
     private:
         sf::RenderWindow window_;
         sf::Vector2u window_size_;
