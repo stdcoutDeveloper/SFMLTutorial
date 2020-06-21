@@ -28,7 +28,7 @@ namespace SFMLTutorial
 
                 // draw
                 // window_.draw(rect.GetRectangle());
-                mush.Bounce(window_.getSize().x, window_.getSize().y);
+                // mush.Update(window_.getSize().x, window_.getSize().y);
                 window_.draw(mush.GetMushroom());
 
                 window_.display();

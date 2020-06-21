@@ -170,6 +170,7 @@
     <ClCompile Include="SFMLTutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Program.h" />
