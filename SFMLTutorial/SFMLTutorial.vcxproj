@@ -170,12 +170,16 @@
     <ClCompile Include="SFMLTutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Apple.h" />
+    <ClInclude Include="Bound.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shapes.h" />
+    <ClInclude Include="Snake.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

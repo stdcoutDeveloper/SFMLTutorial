@@ -54,6 +54,6 @@ namespace SFMLTutorial
         Mushroom mush_;
         sf::Clock clock_;
         sf::Time time_elapsed_;
-        static constexpr float fps_ = 1 / 60.0f; // 60 frame per second.
+        static constexpr float FPS = 1 / 60.0f; // 60 frame per second.
     };
 }
