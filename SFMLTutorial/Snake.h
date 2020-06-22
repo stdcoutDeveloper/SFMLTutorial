@@ -166,6 +166,7 @@ namespace SFMLTutorial
         {
             if (snake_body_.empty() || direction_ == Direction::NONE)
                 return;
+
             Move();
             CheckCollision();
         }
@@ -177,6 +178,7 @@ namespace SFMLTutorial
             {
                 snake_body_.pop_back(); // remove last element in vector.
             }
+
             lives_--;
             if (lives_ == 0)
                 Lose();
@@ -202,6 +204,21 @@ namespace SFMLTutorial
                                        static_cast<float>(itr->position_.y * graphics_size_));
                 window.draw(body_rect_);
             }
+        }
+
+        Direction GetPhysicalDirection()
+        {
+            if (snake_body_.size() <= 1)
+                return Direction::NONE;
+
+            SnakeSegment& head = snake_body_[0];
+            SnakeSegment& neck = snake_body_[1];
+            if (head.position_.x == neck.position_.x)
+                return (head.position_.y > neck.position_.y ? Direction::DOWN : Direction::UP);
+            if (head.position_.y == neck.position_.y)
+                return (head.position_.x > neck.position_.x ? Direction::RIGHT : Direction::LEFT);
+
+            return Direction::NONE;
         }
 
     private:

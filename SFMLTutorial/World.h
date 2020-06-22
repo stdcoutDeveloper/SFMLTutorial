@@ -16,10 +16,10 @@ namespace SFMLTutorial
             {
                 if ((i + 1) % 2 == 0)
                     bounds_[i].SetSize(sf::Vector2f(static_cast<float>(window_size_.x),
-                                                    static_cast<float>(grid_size_)));
+                                                    static_cast<float>(grid_size_))); // horizontally
                 else
                     bounds_[i].SetSize(sf::Vector2f(static_cast<float>(grid_size_),
-                                                    static_cast<float>(window_size_.y)));
+                                                    static_cast<float>(window_size_.y))); // vertically
 
                 if (i < 2) // top-left corner?
                 {
@@ -52,6 +52,7 @@ namespace SFMLTutorial
 
         void Update(Snake& player)
         {
+            // Check whether snake eats apple?
             if (player.GetPosition() == apple_position_)
             {
                 player.Extend();
@@ -59,6 +60,7 @@ namespace SFMLTutorial
                 RespawnApple();
             }
 
+            // Check whether snake collides with bounds?
             int gridSizeX = window_size_.x / grid_size_;
             int gridSizeY = window_size_.y / grid_size_;
             if (player.GetPosition().x <= 0 || player.GetPosition().y <= 0 || player.GetPosition().x >= gridSizeX - 1
@@ -66,6 +68,9 @@ namespace SFMLTutorial
                 player.Lose();
         }
 
+        /**
+         * \brief Draw bounds and apple.
+         */
         void Render(sf::RenderWindow& window)
         {
             // draw bounds and apple.

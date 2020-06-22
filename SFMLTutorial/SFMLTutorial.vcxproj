@@ -178,6 +178,7 @@
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="Textbox.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
