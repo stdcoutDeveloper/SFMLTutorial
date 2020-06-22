@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Window.h"
 #include "Mushroom.h"
 #include "World.h"
@@ -25,11 +26,13 @@ namespace SFMLTutorial
                 snake_.SetDirection(Direction::UP);
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake_.GetPhysicalDirection() != Direction::UP)
                 snake_.SetDirection(Direction::DOWN);
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake_.GetPhysicalDirection() != Direction::RIGHT
-            )
+			// @formatter: off
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake_.GetPhysicalDirection() != Direction::RIGHT)
+			// @formatter: on
                 snake_.SetDirection(Direction::LEFT);
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake_.GetPhysicalDirection() != Direction::LEFT
-            )
+			// @formatter: off
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake_.GetPhysicalDirection() != Direction::LEFT)
+			// @formatter: on
                 snake_.SetDirection(Direction::RIGHT);
         }
 

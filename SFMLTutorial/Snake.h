@@ -208,7 +208,7 @@ namespace SFMLTutorial
 
         Direction GetPhysicalDirection()
         {
-            if (snake_body_.size() <= 1)
+            if (snake_body_.size() <= 1 || direction_ == Direction::NONE) // is snake still?
                 return Direction::NONE;
 
             SnakeSegment& head = snake_body_[0];
