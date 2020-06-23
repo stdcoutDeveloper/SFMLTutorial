@@ -1,6 +1,8 @@
 #pragma once
+
 #include "pch.h"
 #include <vector>
+#include "Textbox.h"
 
 namespace SFMLTutorial
 {
@@ -28,7 +30,7 @@ namespace SFMLTutorial
     class Snake
     {
     public:
-        Snake(int blockSize) : graphics_size_(blockSize)
+        Snake(int blockSize, Textbox* textboxPtr) : graphics_size_(blockSize), textbox_ptr_(textboxPtr)
         {
             body_rect_.setSize(sf::Vector2f(static_cast<float>(graphics_size_ - 1),
                                             static_cast<float>(graphics_size_ - 1)));
@@ -70,6 +72,7 @@ namespace SFMLTutorial
         void IncreaseScore()
         {
             score_ += 10;
+            textbox_ptr_->Add("You ate an apple. Score: " + std::to_string(score_));
         }
 
         bool IsLost()
@@ -180,6 +183,8 @@ namespace SFMLTutorial
             }
 
             lives_--;
+            textbox_ptr_->Add("You have " + std::to_string(lives_) + (lives_ > 1 ? " lives " : " live ") + "left.");
+
             if (lives_ == 0)
                 Lose();
         }
@@ -208,7 +213,7 @@ namespace SFMLTutorial
 
         Direction GetPhysicalDirection()
         {
-            if (snake_body_.size() <= 1 || direction_ == Direction::NONE) // is snake still?
+            if (snake_body_.size() <= 1)
                 return Direction::NONE;
 
             SnakeSegment& head = snake_body_[0];
@@ -228,6 +233,7 @@ namespace SFMLTutorial
         sf::RectangleShape body_rect_;
         int graphics_size_, speed_, lives_, score_;
         bool is_lost_;
+        Textbox* textbox_ptr_ = nullptr;
 
         /**
          * \brief Check if snake collides itself.

@@ -1,6 +1,8 @@
 #pragma once
+
 #include "pch.h"
 #include <string>
+#include "EventManager.h"
 
 namespace SFMLTutorial
 {
@@ -48,11 +50,20 @@ namespace SFMLTutorial
             sf::Event event;
             while (window_.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed)
-                    is_close_ = true;
-                else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F5)
-                    ToggleFullScreen();
+                if (event.type == sf::Event::LostFocus)
+                {
+                    is_focused_ = false;
+                    event_manager_.SetFocus(false);
+                }
+                else if (event.type == sf::Event::GainedFocus)
+                {
+                    is_focused_ = true;
+                    event_manager_.SetFocus(true);
+                }
+                event_manager_.HandleEvent(event);
             }
+
+            event_manager_.Update();
         }
 
         bool IsClose() const
@@ -65,16 +76,31 @@ namespace SFMLTutorial
             return is_fullscreen_;
         }
 
+        bool IsFocused() const
+        {
+            return is_focused_;
+        }
+
+        EventManager& GetEventManager()
+        {
+            return event_manager_;
+        }
+
         sf::Vector2u GetWindowSize() const
         {
             return window_size_;
         }
 
-        void ToggleFullScreen()
+        void ToggleFullScreen(EventDetails* details)
         {
             is_fullscreen_ = !is_fullscreen_;
             Destroy();
             Create();
+        }
+
+        void Close(EventDetails* details = nullptr)
+        {
+            is_close_ = true;
         }
 
         sf::RenderWindow& GetRenderWindow()
@@ -85,8 +111,9 @@ namespace SFMLTutorial
     private:
         sf::RenderWindow window_;
         sf::Vector2u window_size_;
+        EventManager event_manager_;
         std::string window_title_;
-        bool is_close_ = false, is_fullscreen_ = false;
+        bool is_close_ = false, is_fullscreen_ = false, is_focused_ = true;
 
         void Setup(const std::string title, const sf::Vector2u& size)
         {
@@ -94,6 +121,10 @@ namespace SFMLTutorial
             window_size_ = size;
 
             Create();
+
+            // bind actions to event.
+            event_manager_.AddCallback("Fullscreen_toggle", &Window::ToggleFullScreen, this);
+            event_manager_.AddCallback("Window_close", &Window::Close, this);
         }
 
         void Destroy()

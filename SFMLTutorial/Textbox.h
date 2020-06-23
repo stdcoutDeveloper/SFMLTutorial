@@ -1,4 +1,5 @@
 #pragma once
+
 #include "pch.h"
 #include <string>
 
@@ -49,18 +50,18 @@ namespace SFMLTutorial
         /**
          * \brief Update content of message box if it has new message.
          */
-        void Update(std::string str, bool isNewRound = false)
-        {
-            if (isNewRound)
-            {
-                Clear();
-            }
+        //void Update(std::string str, bool isNewRound = false)
+        //{
+        //    if (isNewRound)
+        //    {
+        //        Clear();
+        //    }
 
-            if (!IsContainMessage(str)) // is new message?
-            {
-                Add(str);
-            }
-        }
+        //    if (!IsContainMessage(str)) // is new message?
+        //    {
+        //        Add(str);
+        //    }
+        //}
 
     private:
         typedef std::vector<std::string> MessageContainer;

@@ -172,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="Bound.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="pch.h" />

@@ -5,16 +5,18 @@
 #include "World.h"
 #include "Snake.h"
 #include "Textbox.h"
+#include <iostream>
 
 namespace SFMLTutorial
 {
     class Game
     {
     public:
-        Game() : window_("Game", sf::Vector2u(800, 600)), world_(sf::Vector2u(800, 600)), snake_(world_.GetGridSize()),
-                 textbox_(5, 14, 350, sf::Vector2f(16.0f, 16.0f))
+        Game() : window_("Game", sf::Vector2u(800, 600)), world_(sf::Vector2u(800, 600)),
+                 textbox_(5, 14, 350, sf::Vector2f(16.0f, 16.0f)), snake_(world_.GetGridSize(), &textbox_)
         {
             textbox_.Add("Seeded random number generator with: " + std::to_string(time(nullptr)));
+            window_.GetEventManager().AddCallback("Move", &Game::MoveSprite, this);
         }
 
         ~Game() = default;
@@ -26,14 +28,12 @@ namespace SFMLTutorial
                 snake_.SetDirection(Direction::UP);
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake_.GetPhysicalDirection() != Direction::UP)
                 snake_.SetDirection(Direction::DOWN);
-			// @formatter: off
+            // @formatter:off
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake_.GetPhysicalDirection() != Direction::RIGHT)
-			// @formatter: on
                 snake_.SetDirection(Direction::LEFT);
-			// @formatter: off
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake_.GetPhysicalDirection() != Direction::LEFT)
-			// @formatter: on
                 snake_.SetDirection(Direction::RIGHT);
+            // @formatter:on
         }
 
         void Update()
@@ -51,12 +51,8 @@ namespace SFMLTutorial
 
                 if (snake_.IsLost())
                 {
-                    textbox_.Update("Game over! Score: " + std::to_string(snake_.GetScore()), true);
+                    textbox_.Add("Game over! Score: " + std::to_string(snake_.GetScore()));
                     snake_.Reset();
-                }
-                else if (snake_.GetScore() > 0)
-                {
-                    textbox_.Update("You ate an apple. Score: " + std::to_string(snake_.GetScore()));
                 }
             }
         }
@@ -68,10 +64,10 @@ namespace SFMLTutorial
         {
             window_.ClearBeforeDraw();
 
-            // window_.Draw(mush_.GetMushroom());
-            world_.Render(window_.GetRenderWindow());
-            snake_.Render(window_.GetRenderWindow());
-            textbox_.Render(window_.GetRenderWindow());
+            window_.Draw(mush_.GetMushroom());
+            //world_.Render(window_.GetRenderWindow());
+            //snake_.Render(window_.GetRenderWindow());
+            //textbox_.Render(window_.GetRenderWindow());
 
             window_.DisplayAfterDraw();
         }
@@ -93,12 +89,19 @@ namespace SFMLTutorial
 
     private:
         Window window_;
-        // Mushroom mush_;
+        Mushroom mush_;
         sf::Clock clock_;
         sf::Time time_elapsed_;
         World world_;
-        Snake snake_;
         Textbox textbox_;
+        Snake snake_;
         // static constexpr float FPS = 1 / 60.0f; // 60 frame per second.
+
+        void MoveSprite(EventDetails* details)
+        {
+            sf::Vector2i mousePosition = window_.GetEventManager().GetMousePosition(&window_.GetRenderWindow());
+            mush_.GetMushroom().setPosition(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+            std::cout << "Moving sprite to: " << mousePosition.x << ":" << mousePosition.y << std::endl;
+        }
     };
 }
