@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\StateManager">
+      <UniqueIdentifier>{219aad32-ac63-4d98-bc8a-d72a402e3fa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EventManager">
+      <UniqueIdentifier>{2454455c-07b0-4dc1-af34-028fb331c3bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SFMLTutorial.cpp">
@@ -56,8 +62,17 @@
     <ClInclude Include="Textbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
+    <ClInclude Include="SharedContext.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseState.h">
+      <Filter>Header Files\StateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>Header Files\StateManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

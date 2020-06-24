@@ -16,11 +16,10 @@ namespace SFMLTutorial
      */
     enum class EventType
     {
-        KEY_DOWN = sf::Event::KeyPressed,
-        //5
+		// @formatter:off
+        KEY_DOWN = sf::Event::KeyPressed, //5
         KEY_UP = sf::Event::KeyReleased,
-        MOUSE_BUTTON_DOWN = sf::Event::MouseButtonPressed,
-        //9
+        MOUSE_BUTTON_DOWN = sf::Event::MouseButtonPressed, //9
         MOUSE_BUTTON_UP = sf::Event::MouseButtonReleased,
         MOUSE_WHEEL = sf::Event::MouseWheelMoved,
         WINDOW_RESIZED = sf::Event::Resized,
@@ -30,10 +29,10 @@ namespace SFMLTutorial
         MOUSE_LEFT = sf::Event::MouseLeft,
         CLOSED = sf::Event::Closed,
         TEXT_ENTERED = sf::Event::TextEntered,
-        KEYBOARD = sf::Event::Count + 1,
-        //24
+        KEYBOARD = sf::Event::Count + 1,  //24
         MOUSE,
         JOYSTICK
+        // @formatter:on
     };
 
     /**
