@@ -11,11 +11,12 @@ int main(int argc, const char* argv[])
     SFMLTutorial::Game game;
     while (!game.GetWindow().IsClose())
     {
-        game.HandleInput();
+        // game.HandleInput();
         game.Update();
         game.Render();
+        game.LateUpdate();
         // sf::sleep(sf::seconds(0.2f)); // Sleep 0.2s
-        game.RestartClock();
+        // game.RestartClock();
     }
 
     return EXIT_SUCCESS;

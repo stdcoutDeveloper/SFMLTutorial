@@ -168,11 +168,15 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SFMLTutorial.cpp" />
+    <ClCompile Include="StateIntro.cpp" />
+    <ClCompile Include="StateMainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
     <ClInclude Include="SharedContext.h" />
+    <ClInclude Include="StateIntro.h" />
+    <ClInclude Include="StateMainMenu.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="Bound.h" />
     <ClInclude Include="EventManager.h" />

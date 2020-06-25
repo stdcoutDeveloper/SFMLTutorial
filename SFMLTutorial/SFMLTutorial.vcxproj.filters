@@ -19,12 +19,21 @@
     <Filter Include="Header Files\EventManager">
       <UniqueIdentifier>{2454455c-07b0-4dc1-af34-028fb331c3bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\StateManager\States">
+      <UniqueIdentifier>{03bc3b9c-e109-416f-b289-cc039d48e00b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SFMLTutorial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateIntro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,14 +74,20 @@
     <ClInclude Include="SharedContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseState.h">
-      <Filter>Header Files\StateManager</Filter>
-    </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Header Files\EventManager</Filter>
     </ClInclude>
     <ClInclude Include="StateManager.h">
       <Filter>Header Files\StateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="StateIntro.h">
+      <Filter>Header Files\StateManager\States</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseState.h">
+      <Filter>Header Files\StateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMainMenu.h">
+      <Filter>Header Files\StateManager\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

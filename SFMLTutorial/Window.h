@@ -123,8 +123,8 @@ namespace SFMLTutorial
             Create();
 
             // bind actions to event.
-            event_manager_.AddCallback("Fullscreen_toggle", &Window::ToggleFullScreen, this);
-            event_manager_.AddCallback("Window_close", &Window::Close, this);
+            event_manager_.AddCallback(StateType(0), "Fullscreen_toggle", &Window::ToggleFullScreen, this);
+            event_manager_.AddCallback(StateType(0), "Window_close", &Window::Close, this);
         }
 
         void Destroy()

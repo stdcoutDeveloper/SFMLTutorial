@@ -11,6 +11,8 @@
 
 namespace SFMLTutorial
 {
+    enum class StateType; // forward declaration.
+
     /**
      * \brief Type of event.
      */
@@ -147,15 +149,27 @@ namespace SFMLTutorial
         }
 
         template <class T>
-        bool AddCallback(const std::string& name, void (T::*func)(EventDetails*), T* instance)
+        bool AddCallback(StateType state, const std::string& name, void (T::*func)(EventDetails*), T* instance)
         {
+            // emplace returns pair<iterator, bool>
+            auto itr = callbacks_.emplace(state, CallbackContainer()).first; // get iterator
             auto temp = std::bind(func, instance, std::placeholders::_1);
-            return callbacks_.emplace(name, temp).second; // second is std::function...
+            return itr->second.emplace(name, temp).second; // get bool
+            // return callbacks_.emplace(name, temp).second; // second is std::function...
         }
 
-        void RemoveCallback(const std::string& name)
+        bool RemoveCallback(StateType state, const std::string& name)
         {
-            callbacks_.erase(name);
+            auto itr = callbacks_.find(state);
+            if (itr == callbacks_.end())
+                return false;
+
+            auto callbackContainerItr = itr->second.find(name);
+            if (callbackContainerItr == itr->second.end())
+                return false;
+
+            itr->second.erase(name);
+            return true;
         }
 
         void HandleEvent(sf::Event& event)
@@ -169,6 +183,7 @@ namespace SFMLTutorial
                     if (eventItr.first != sfmlEvent)
                         continue;
 
+					// @formatter:off
                     // check if it's a keyboard event
                     if (sfmlEvent == EventType::KEY_DOWN || sfmlEvent == EventType::KEY_UP) // is matching type?
                     {
@@ -181,8 +196,7 @@ namespace SFMLTutorial
                             break;
                         }
                     }
-                    else if (sfmlEvent == EventType::MOUSE_BUTTON_DOWN || sfmlEvent == EventType::MOUSE_BUTTON_UP)
-                        // mouse event?
+                    else if (sfmlEvent == EventType::MOUSE_BUTTON_DOWN || sfmlEvent == EventType::MOUSE_BUTTON_UP) // mouse event?
                     {
                         if (eventItr.second.code_of_key_pressed_ == event.mouseButton.button)
                         {
@@ -214,6 +228,7 @@ namespace SFMLTutorial
 
                         (bind->count_events_happening_)++;
                     }
+                    // @formatter:on
                 }
             }
         }
@@ -262,9 +277,23 @@ namespace SFMLTutorial
                 // is matching number of events in the event container and events that are "on"?
                 if (bind->events_.size() == bind->count_events_happening_)
                 {
-                    auto callItr = callbacks_.find(bind->name_);
-                    if (callItr != callbacks_.end()) // if found -> call function accordingly.
-                        callItr->second(&(bind->details_));
+                    auto stateCallbacksItr = callbacks_.find(current_state_);
+                    auto otherCallbacksItr = callbacks_.find(StateType(0));
+                    // process global callbacks for the Window class.
+
+                    if (stateCallbacksItr != callbacks_.end())
+                    {
+                        auto callItr = stateCallbacksItr->second.find(bind->name_);
+                        if (callItr != stateCallbacksItr->second.end()) // if found -> call function accordingly.
+                            callItr->second(&(bind->details_));
+                    }
+
+                    if (otherCallbacksItr != callbacks_.end())
+                    {
+                        auto callItr = otherCallbacksItr->second.find(bind->name_);
+                        if (callItr != otherCallbacksItr->second.end()) // if found -> call function accordingly.
+                            callItr->second(&(bind->details_));
+                    }
                 }
 
                 // reset
@@ -278,12 +307,19 @@ namespace SFMLTutorial
             return (window ? sf::Mouse::getPosition(*window) : sf::Mouse::getPosition());
         }
 
+        void SetCurrentState(StateType state)
+        {
+            current_state_ = state;
+        }
+
     private:
         typedef std::unordered_map<std::string, Binding*> Bindings;
-        typedef std::unordered_map<std::string, std::function<void(EventDetails*)>> Callbacks;
+        typedef std::unordered_map<std::string, std::function<void(EventDetails*)>> CallbackContainer;
+        typedef std::unordered_map<StateType, CallbackContainer> Callbacks;
 
         Bindings bindings_;
         Callbacks callbacks_;
+        StateType current_state_;
         bool is_window_focused_ = true;
 
         /**

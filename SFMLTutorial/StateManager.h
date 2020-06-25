@@ -1,7 +1,8 @@
 #pragma once
 
 #include "SharedContext.h"
-#include "BaseState.h"
+#include "StateIntro.h"
+#include "StateMainMenu.h" // TODO ???
 
 namespace SFMLTutorial
 {
@@ -20,8 +21,8 @@ namespace SFMLTutorial
     public:
         StateManager(SharedContext* sharedContext) : shared_context_(sharedContext)
         {
-            // RegisterState<StateIntro>(StateType::INTRO);
-            // RegisterState<StateMainMenu>(StateType::MAIN_MENU);
+            RegisterState<StateIntro>(StateType::INTRO);
+            RegisterState<StateMainMenu>(StateType::MAIN_MENU);
             // RegisterState<StateGame>(StateType::GAME);
             // RegisterState<StatePaused>(StateType::PAUSED);
         }
@@ -147,7 +148,7 @@ namespace SFMLTutorial
          */
         void SwitchTo(const StateType& type)
         {
-            //shared_context_->event_manager_->SetCurrentState(type);
+            shared_context_->event_manager_->SetCurrentState(type);
             for (auto itr = states_.begin(); itr != states_.end(); ++itr)
             {
                 // if found state
