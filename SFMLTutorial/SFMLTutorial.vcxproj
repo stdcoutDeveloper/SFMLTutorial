@@ -168,13 +168,16 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SFMLTutorial.cpp" />
+    <ClCompile Include="StateGame.cpp" />
     <ClCompile Include="StateIntro.cpp" />
     <ClCompile Include="StateMainMenu.cpp" />
+    <ClCompile Include="StatePaused.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
     <ClInclude Include="SharedContext.h" />
+    <ClInclude Include="StateGame.h" />
     <ClInclude Include="StateIntro.h" />
     <ClInclude Include="StateMainMenu.h" />
     <ClInclude Include="StateManager.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="StatePaused.h" />
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

@@ -4,7 +4,7 @@
 
 namespace SFMLTutorial
 {
-    class StateManager; // forward declaration.
+    class StateManager; // forward declaration. -> use StateManager* state_mgr_ undefined
 
     class BaseState
     {

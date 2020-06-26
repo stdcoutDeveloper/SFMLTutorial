@@ -36,6 +36,12 @@
     <ClCompile Include="StateMainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StateGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StatePaused.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program.h">
@@ -87,6 +93,12 @@
       <Filter>Header Files\StateManager</Filter>
     </ClInclude>
     <ClInclude Include="StateMainMenu.h">
+      <Filter>Header Files\StateManager\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StateGame.h">
+      <Filter>Header Files\StateManager\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StatePaused.h">
       <Filter>Header Files\StateManager\States</Filter>
     </ClInclude>
   </ItemGroup>

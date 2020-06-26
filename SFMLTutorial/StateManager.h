@@ -3,6 +3,8 @@
 #include "SharedContext.h"
 #include "StateIntro.h"
 #include "StateMainMenu.h" // TODO ???
+#include "StateGame.h"
+#include "StatePaused.h"
 
 namespace SFMLTutorial
 {
@@ -23,8 +25,8 @@ namespace SFMLTutorial
         {
             RegisterState<StateIntro>(StateType::INTRO);
             RegisterState<StateMainMenu>(StateType::MAIN_MENU);
-            // RegisterState<StateGame>(StateType::GAME);
-            // RegisterState<StatePaused>(StateType::PAUSED);
+            RegisterState<StateGame>(StateType::GAME);
+            RegisterState<StatePaused>(StateType::PAUSED);
         }
 
         ~StateManager()
