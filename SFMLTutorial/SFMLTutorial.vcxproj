@@ -176,6 +176,7 @@
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SharedContext.h" />
     <ClInclude Include="StateGame.h" />
     <ClInclude Include="StateIntro.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Snake.h" />
     <ClInclude Include="StatePaused.h" />
     <ClInclude Include="Textbox.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

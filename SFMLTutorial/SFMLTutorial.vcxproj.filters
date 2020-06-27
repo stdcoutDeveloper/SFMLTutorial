@@ -22,6 +22,9 @@
     <Filter Include="Header Files\StateManager\States">
       <UniqueIdentifier>{03bc3b9c-e109-416f-b289-cc039d48e00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ResourceManager">
+      <UniqueIdentifier>{fcb257a5-1289-4b8d-8ed8-720c2dd53dba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SFMLTutorial.cpp">
@@ -103,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Header Files\ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

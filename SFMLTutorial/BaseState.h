@@ -51,8 +51,14 @@ namespace SFMLTutorial
             return state_mgr_;
         }
 
+        sf::View& GetView()
+        {
+            return view_;
+        }
+
     protected:
         StateManager* state_mgr_;
+        sf::View view_;
         bool is_transparent_ = false, is_transcendent_ = false;
 
     private:

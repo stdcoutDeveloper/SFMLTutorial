@@ -96,7 +96,9 @@ namespace SFMLTutorial
 
                 while (itr != states_.end())
                 {
-                    itr->second->Draw();
+                    BaseState* state = itr->second;
+                    shared_context_->window_->GetRenderWindow().setView(state->GetView()); // set view before drawing.
+                    state->Draw();
                     ++itr;
                 }
             }
@@ -162,16 +164,21 @@ namespace SFMLTutorial
                     states_.erase(itr);
                     states_.emplace_back(tempType, tempState);
                     tempState->Activate();
+
+                    shared_context_->window_->GetRenderWindow().setView(tempState->GetView());
                     return;
                 }
             }
 
+            BaseState* state = states_.back().second;
+
             // Not found state: create new one.
             if (!states_.empty())
-                states_.back().second->Deactivate();
+                state->Deactivate();
 
             CreateState(type);
-            states_.back().second->Activate();
+            state->Activate();
+            shared_context_->window_->GetRenderWindow().setView(state->GetView());
         }
 
         /**
@@ -202,6 +209,9 @@ namespace SFMLTutorial
                 return;
 
             BaseState* state = newState->second();
+
+            state->view_ = shared_context_->window_->GetRenderWindow().getDefaultView();
+
             states_.emplace_back(type, state);
             state->OnCreate();
         }

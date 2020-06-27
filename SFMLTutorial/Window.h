@@ -108,6 +108,18 @@ namespace SFMLTutorial
             return window_;
         }
 
+        sf::FloatRect GetViewSpace()
+        {
+            // getCenter(): return centre's coordinates of view in windows coordinates.
+            sf::Vector2f viewCenter = window_.getView().getCenter();
+            sf::Vector2f viewSize = window_.getView().getSize();
+            sf::Vector2f viewSizeHalf(viewSize.x / 2, viewSize.y / 2);
+
+            // first argument: position, second argument: size
+            sf::FloatRect viewSpace(viewCenter - viewSizeHalf, viewSize); // position: coordinates of top left corner.
+            return viewSpace;
+        }
+
     private:
         sf::RenderWindow window_;
         sf::Vector2u window_size_;
