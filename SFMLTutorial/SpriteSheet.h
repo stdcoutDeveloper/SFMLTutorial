@@ -3,7 +3,8 @@
 #include "pch.h"
 #include "Direction.h"
 #include "TextureManager.h"
-#include "AnimationBase.h"
+//#include "AnimationBase.h" // ???
+#include "AnimationDirectional.h" // ???
 #include <string>
 #include <unordered_map>
 
@@ -34,6 +35,106 @@ namespace SFMLTutorial
 
         bool LoadSheet(const std::string& file)
         {
+            std::ifstream ifs;
+            ifs.open(Utilities::GetWorkingDirectoryA() + file, std::ifstream::in);
+            if (ifs.is_open())
+            {
+                ReleaseSheet(); // Release current sheet resources.
+                std::string line;
+                while (std::getline(ifs, line))
+                {
+                    if (line[0] == '|')
+                        continue;
+
+                    std::stringstream keyStream(line);
+                    std::string type;
+                    keyStream >> type;
+
+                    if (type.compare("Texture") == 0)
+                    {
+                        if (!texture_.empty())
+                        {
+#ifdef _DEBUG
+                            std::cerr << "Duplicate texture entries in: " << file << std::endl;
+#endif
+                            continue;
+                        }
+
+                        std::string texture;
+                        keyStream >> texture;
+                        if (!texture_mgr_->RequireResource(texture))
+                        {
+#ifdef _DEBUG
+                            std::cerr << "Could not setup the texture: " << texture << std::endl;
+#endif
+                            continue;
+                        }
+
+                        texture_ = texture;
+                        sprite_.setTexture(*(texture_mgr_->GetResource(texture)));
+                    }
+                    else if (type.compare("Size") == 0)
+                    {
+                        keyStream >> sprite_size_.x >> sprite_size_.y;
+                        SetSpriteSize(sprite_size_);
+                    }
+                    else if (type.compare("Scale") == 0)
+                    {
+                        keyStream >> sprite_scale_.x >> sprite_scale_.y;
+                        sprite_.setScale(sprite_scale_);
+                    }
+                    else if (type.compare("AnimationType"))
+                    {
+                        keyStream >> animation_type_;
+                    }
+                    else if (type.compare("Animation"))
+                    {
+                        std::string name;
+                        keyStream >> name;
+
+                        if (animations_.find(name) != animations_.end())
+                        {
+#ifdef _DEBUG
+                            std::cerr << "Duplicate animation: " << name << " in " << file << std::endl;
+#endif
+                            continue;
+                        }
+
+                        AnimationBase* anim = nullptr;
+                        if (animation_type_.compare("Directional") == 0)
+                        {
+                            anim = new AnimationDirectional();
+                        }
+                        else
+                        {
+#ifdef _DEBUG
+                            std::cerr << "Unknown animation type: " << animation_type_ << std::endl;
+#endif
+                            continue;
+                        }
+
+                        keyStream >> *anim; // overload operator >>.
+                        anim->SetSpriteSheet(this);
+                        anim->SetName(name);
+                        anim->Reset();
+
+                        animations_.emplace(name, anim);
+                        if (animation_current_)
+                            continue;
+
+                        animation_current_ = anim;
+                        animation_current_->Play();
+                    }
+                }
+
+                ifs.close();
+                return true;
+            }
+
+#ifdef _DEBUG
+            std::cerr << "Could not loading spritesheet: " << file << std::endl;
+#endif
+            return false;
         }
 
         /**
@@ -55,6 +156,11 @@ namespace SFMLTutorial
             return animation_current_;
         }
 
+        sf::Vector2i GetSpriteSize() const
+        {
+            return sprite_size_;
+        }
+
         void SetSpriteSize(const sf::Vector2i& size)
         {
             sprite_size_ = size;
@@ -64,6 +170,11 @@ namespace SFMLTutorial
         void SetSpritePosition(const sf::Vector2f& position)
         {
             sprite_.setPosition(position);
+        }
+
+        Direction GetDirection() const
+        {
+            return direction_;
         }
 
         void SetDirection(const Direction& direction)

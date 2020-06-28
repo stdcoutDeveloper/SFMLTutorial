@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationBase.h" />
+    <ClInclude Include="AnimationDirectional.h" />
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
     <ClInclude Include="Direction.h" />
