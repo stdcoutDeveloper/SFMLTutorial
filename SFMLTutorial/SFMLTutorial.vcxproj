@@ -174,10 +174,13 @@
     <ClCompile Include="StatePaused.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationBase.h" />
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
+    <ClInclude Include="Direction.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SharedContext.h" />
+    <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="StateGame.h" />
     <ClInclude Include="StateIntro.h" />
     <ClInclude Include="StateMainMenu.h" />
