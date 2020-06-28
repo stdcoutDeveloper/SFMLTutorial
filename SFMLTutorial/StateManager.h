@@ -170,13 +170,13 @@ namespace SFMLTutorial
                 }
             }
 
-            BaseState* state = states_.back().second;
-
             // Not found state: create new one.
             if (!states_.empty())
-                state->Deactivate();
+                states_.back().second->Deactivate();
 
             CreateState(type);
+
+            BaseState* state = states_.back().second;
             state->Activate();
             shared_context_->window_->GetRenderWindow().setView(state->GetView());
         }
