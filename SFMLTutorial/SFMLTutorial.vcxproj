@@ -179,6 +179,7 @@
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SharedContext.h" />
     <ClInclude Include="SpriteSheet.h" />

@@ -4,12 +4,14 @@
 #include "Direction.h"
 #include "TextureManager.h"
 //#include "AnimationBase.h" // ???
-#include "AnimationDirectional.h" // ???
+//#include "AnimationDirectional.h" // ???
 #include <string>
 #include <unordered_map>
 
 namespace SFMLTutorial
 {
+    class AnimationBase; // forward declaration to avoid circular dependency???
+
     class SpriteSheet
     {
     public:
@@ -50,7 +52,7 @@ namespace SFMLTutorial
                     std::string type;
                     keyStream >> type;
 
-                    if (type.compare("Texture") == 0)
+                    if (type == "Texture")
                     {
                         if (!texture_.empty())
                         {
@@ -73,21 +75,21 @@ namespace SFMLTutorial
                         texture_ = texture;
                         sprite_.setTexture(*(texture_mgr_->GetResource(texture)));
                     }
-                    else if (type.compare("Size") == 0)
+                    else if (type == "Size")
                     {
                         keyStream >> sprite_size_.x >> sprite_size_.y;
                         SetSpriteSize(sprite_size_);
                     }
-                    else if (type.compare("Scale") == 0)
+                    else if (type == "Scale")
                     {
                         keyStream >> sprite_scale_.x >> sprite_scale_.y;
                         sprite_.setScale(sprite_scale_);
                     }
-                    else if (type.compare("AnimationType"))
+                    else if (type == "AnimationType")
                     {
                         keyStream >> animation_type_;
                     }
-                    else if (type.compare("Animation"))
+                    else if (type == "Animation")
                     {
                         std::string name;
                         keyStream >> name;
@@ -101,7 +103,7 @@ namespace SFMLTutorial
                         }
 
                         AnimationBase* anim = nullptr;
-                        if (animation_type_.compare("Directional") == 0)
+                        if (animation_type_ == "Directional")
                         {
                             anim = new AnimationDirectional();
                         }
@@ -119,7 +121,7 @@ namespace SFMLTutorial
                         anim->Reset();
 
                         animations_.emplace(name, anim);
-                        if (animation_current_)
+                        if (animation_current_) // whether current animation has been assigned a value yet?
                             continue;
 
                         animation_current_ = anim;

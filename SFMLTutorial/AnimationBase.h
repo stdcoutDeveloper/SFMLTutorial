@@ -30,6 +30,11 @@ namespace SFMLTutorial
             is_loop_ = isLoop;
         }
 
+        void SetName(const std::string& name)
+        {
+            name_ = name;
+        }
+
         /**
          * \brief Add support for types of animation that can play backwards in the future.
          */
@@ -134,7 +139,7 @@ namespace SFMLTutorial
         float elapsed_time_;
         bool is_loop_;
         bool is_playing_;
-        std::string name_;
+        std::string name_; // animation name
         SpriteSheet* sprite_sheet_;
     };
 }
