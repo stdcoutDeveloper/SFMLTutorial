@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 #include "EntityManager.h" // incomplete class???
 #include "SharedContext.h" // incomplete class???
 #include "Map.h" // incomplete class???
@@ -35,9 +36,30 @@ namespace SFMLTutorial
     class EntityManager; // forward declaration
     struct TileInfo;
 
+    /**
+     * \brief Hold the collision information.
+     */
     struct CollisionElement
     {
+        CollisionElement(float area, TileInfo* info, const sf::FloatRect& tileBounds) : area_(area), tile_(info),
+                                                                                        tile_bounds_(tileBounds)
+        {
+        }
+
+        float area_; // area of collision
+        TileInfo* tile_; // information of tile colliding with entity
+        sf::FloatRect tile_bounds_; // boundary information of a tile the entity's colliding with
     };
+
+    /**
+     * \brief Compare two collisions based on area size.
+     * @return true: if area size is bigger.
+     */
+    inline bool SortDescendingCollisionsByArea(const CollisionElement& firstElement,
+                                               const CollisionElement& secondElement)
+    {
+        return (firstElement.area_ > secondElement.area_);
+    }
 
     /**
      * \brief Abstract class provides functionalities that any entity should have.
@@ -146,6 +168,7 @@ namespace SFMLTutorial
 
         void SetAcceleration(float x, float y)
         {
+            acceleration_ = sf::Vector2f(x, y);
         }
 
         /**
@@ -259,14 +282,118 @@ namespace SFMLTutorial
                                                     collision_box_size_.y);
         }
 
+        /**
+         * \brief Dectect collisions
+         */
         void CheckCollisions()
         {
+            // get tile size
+            Map* gameMap = entity_mgr_->GetContext()->game_map_;
+            unsigned int tileSize = gameMap->GetTileSize();
+
+            // calculate range of tile coordinates
+            int fromX = floor(collision_bounding_box_.left / tileSize);
+            int toX = floor((collision_bounding_box_.left + collision_bounding_box_.width) / tileSize);
+            int fromY = floor(collision_bounding_box_.top / tileSize);
+            int toY = floor((collision_bounding_box_.top + collision_bounding_box_.height) / tileSize);
+
+            for (int x = fromX; x <= toX; x++)
+            {
+                for (int y = fromY; y <= toY; y++)
+                {
+                    Tile* tile = gameMap->GetTile(x, y);
+                    if (!tile)
+                        continue;
+
+                    // get collision information
+                    sf::FloatRect tileBounds(x * tileSize, y * tileSize, tileSize, tileSize);
+                    // collision bounds of tile
+                    sf::FloatRect intersection;
+                    collision_bounding_box_.intersects(tileBounds, intersection);
+                    float area = intersection.width * intersection.height;
+
+                    CollisionElement element(area, tile->properties_, tileBounds);
+                    collisions_.emplace_back(element);
+
+                    if (tile->is_warp_ && type_ == EntityType::PLAYER)
+                        gameMap->LoadNextMap();
+                }
+            }
         }
 
         void ResolveCollisions()
         {
+            if (!collisions_.empty())
+            {
+                std::sort(collisions_.begin(), collisions_.end(), SortDescendingCollisionsByArea);
+                // refactor using lambda expression here???
+
+                // get tile size
+                Map* gameMap = entity_mgr_->GetContext()->game_map_;
+                unsigned int tileSize = gameMap->GetTileSize();
+
+                for (auto& collisionItr : collisions_)
+                {
+                    if (!collision_bounding_box_.intersects(collisionItr.tile_bounds_))
+                        continue;
+
+                    // calculate distances from the center of the entity's bounding box to the center of the tile's bounding box
+                    float xDiff = (collision_bounding_box_.left + collision_bounding_box_.width / 2) - (collisionItr
+                                                                                                        .tile_bounds_.
+                                                                                                        left +
+                        collisionItr.tile_bounds_.width / 2);
+                    float yDiff = (collision_bounding_box_.top + collision_bounding_box_.height / 2) - (collisionItr
+                                                                                                        .tile_bounds_.
+                                                                                                        top +
+                        collisionItr.tile_bounds_.height / 2);
+
+                    float resolve = 0.0f;
+                    // which axis the resolution takes place?
+                    if (abs(xDiff) > abs(yDiff))
+                    {
+                        // which side of tile the entity is on?
+                        if (xDiff > 0) // right side?
+                            resolve = collisionItr.tile_bounds_.left + tileSize - collision_bounding_box_.left; // ???
+                        else
+                            resolve = -((collision_bounding_box_.left + collision_bounding_box_.width) - collisionItr
+                                                                                                         .tile_bounds_.
+                                                                                                         left); // ???
+
+                        Move(resolve, 0);
+                        velocity_.x = 0;
+                        is_colliding_on_x_ = true;
+                    }
+                    else
+                    {
+                        if (yDiff > 0)
+                            resolve = collisionItr.tile_bounds_.top + tileSize - collision_bounding_box_.top;
+                        else
+                            resolve = -((collision_bounding_box_.top + collision_bounding_box_.height) - collisionItr
+                                                                                                         .tile_bounds_.
+                                                                                                         top);
+
+                        Move(0, resolve);
+                        velocity_.y = 0;
+                        if (is_colliding_on_y_)
+                            continue;
+
+                        reference_tile_ = collisionItr.tile_;
+                        is_colliding_on_y_ = true;
+                    }
+                }
+
+                collisions_.clear();
+            }
+
+            if (!is_colliding_on_y_)
+                reference_tile_ = nullptr;
         }
 
-        virtual void OnEntityCollision(EntityBase* collider, bool isAttack) = 0;
+        /**
+         * \brief Handle the collision.
+         * @param collider: entity that is collided with.
+         * @param isAttack: false is a normal collision, true: attack collision.
+         */
+        virtual void HandleCollisionWithOtherEntity(EntityBase* collider, bool isAttack) = 0;
     };
 }

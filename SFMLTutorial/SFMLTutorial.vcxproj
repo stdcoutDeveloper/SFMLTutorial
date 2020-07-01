@@ -178,6 +178,7 @@
     <ClInclude Include="AnimationDirectional.h" />
     <ClInclude Include="Apple.h" />
     <ClInclude Include="BaseState.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="EntityBase.h" />
     <ClInclude Include="EntityManager.h" />
